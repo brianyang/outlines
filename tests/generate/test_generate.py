@@ -396,3 +396,19 @@ def test_generate_regex_batch_multi_sample(
         for output_sample_groups in output_batch_groups:
             for output in output_sample_groups:
                 assert re.fullmatch(pattern, output) is not None, output
+
+
+@pytest.mark.parametrize("model_fixture", ALL_MODEL_FIXTURES)
+def test_summarize_chapter(request, model_fixture):
+    from outlines.prompts import chapter_summary, ChapterSummary
+    from outlines.generate.api import summarize_chapter
+
+    model = request.getfixturevalue(model_fixture)
+    chapter_text = """
+    Once upon a time, in a land far, far away, there was a small village nestled in the mountains. The villagers were known for their kindness and hospitality. One day, a traveler arrived in the village, seeking shelter and food. The villagers welcomed him with open arms and provided him with everything he needed. The traveler was so grateful that he decided to stay in the village and help the villagers with their daily tasks. Over time, the traveler became an integral part of the community, and the villagers considered him one of their own.
+    """
+    summary = summarize_chapter(model, chapter_summary, chapter_text)
+    assert isinstance(summary, ChapterSummary)
+    assert summary.chapter_title
+    assert summary.summary
+    assert summary.key_points

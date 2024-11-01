@@ -335,6 +335,37 @@ prompt = labelling("Just awesome", examples)
 answer = outlines.generate.text(model)(prompt, max_tokens=100)
 ```
 
+## Summarizing Book Chapters
+
+Outlines can also be used to generate summaries for each chapter within a long book. Follow these steps to use the summarization functionality:
+
+1. Install the necessary dependencies, including `llama-cpp-python`, as shown in `docs/cookbook/knowledge_graph_extraction.md`.
+2. Download the model weights and initialize the model as described in `docs/cookbook/knowledge_graph_extraction.md`.
+3. Define a Pydantic class for the chapter summary structure. For example, you can create a class with fields like `chapter_title`, `summary`, and `key_points`.
+4. Use the `generate.json` method to generate the chapter summaries by passing the Pydantic class and the prompt to the generator.
+5. Adapt the prompt to the Hermes prompt format for JSON schema, as shown in `docs/cookbook/knowledge_graph_extraction.md`.
+
+Here is an example of how to use the summarization functionality:
+
+```python
+import outlines
+from outlines.prompts import chapter_summary, ChapterSummary
+from outlines.generate.api import summarize_chapter
+
+# Initialize the model
+model = outlines.models.llamacpp("path/to/model/weights")
+
+# Define the chapter text
+chapter_text = """
+Once upon a time, in a land far, far away, there was a small village nestled in the mountains. The villagers were known for their kindness and hospitality. One day, a traveler arrived in the village, seeking shelter and food. The villagers welcomed him with open arms and provided him with everything he needed. The traveler was so grateful that he decided to stay in the village and help the villagers with their daily tasks. Over time, the traveler became an integral part of the community, and the villagers considered him one of their own.
+"""
+
+# Generate the chapter summary
+summary = summarize_chapter(model, chapter_summary, chapter_text)
+
+print(summary)
+```
+
 ## Join us
 
 - 💡 **Have an idea?** Come chat with us on [Discord][discord]

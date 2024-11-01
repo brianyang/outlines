@@ -341,3 +341,23 @@ def parse_pydantic_schema(raw_schema, definitions):
             simple_schema[name] = f"<{name}>"
 
     return simple_schema
+
+
+@prompt
+def chapter_summary(chapter_text: str):
+    """
+    Summarize the following chapter:
+
+    {{ chapter_text }}
+
+    Provide a summary with the following structure:
+    - Chapter Title: {{ chapter_title }}
+    - Summary: {{ summary }}
+    - Key Points: {{ key_points }}
+    """
+
+
+class ChapterSummary(BaseModel):
+    chapter_title: str
+    summary: str
+    key_points: List[str]

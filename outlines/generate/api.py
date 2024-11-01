@@ -621,3 +621,12 @@ class VisionSequenceGeneratorAdapter(SequenceGeneratorAdapter):
             )
 
         return prompts, media
+
+
+def summarize_chapter(model, prompt_template, chapter_text, max_tokens=512):
+    from outlines.generate import json as generate_json
+
+    generator = generate_json(model, ChapterSummary)
+    prompt = prompt_template(chapter_text=chapter_text)
+    summary = generator(prompt, max_tokens=max_tokens)
+    return summary
